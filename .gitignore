@@ -1,0 +1,62 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# ACME challenge
+.well-known/
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+redis-server.log*
+
+# local env files
+.env*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# vscode
+.vscode/
+
+# Secrets
+secret-key/
+
+# redis config
+redis-config/
+redis.conf
+
+# Python
+__pycache__
+*venv*
+.venv*
+
+# Dev utilities
+dev-utils/
+
+# Data
+data/
+change*.json
+*.csv
+
+# misc
+.DS_Store
+Session.vim
+notes.md
+*.pem

@@ -1,0 +1,26 @@
+{
+  "name": "emergency-contacts-print-qr",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "module": "nodenext",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "firebase-admin": "^12.6.0",
+    "ioredis": "^5.4.1",
+    "jspdf": "^2.5.2",
+    "next": "^14.2.15",
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.11",
+    "typescript": "5.6.3"
+  }
+}
