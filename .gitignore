@@ -60,3 +60,4 @@ change*.json
 Session.vim
 notes.md
 *.pem
+.live-sync-server.sh

@@ -3,3 +3,6 @@
 /node_modules/
 .dockerignore
 .gitignore
+Session.vim
+.sw*
+.live-sync-server.sh
