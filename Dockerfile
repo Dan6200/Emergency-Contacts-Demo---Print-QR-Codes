@@ -12,6 +12,6 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 RUN DISABLE_FIREBASE=true pnpm build
 
-# EXPOSE 3000
-#
-# CMD ["pnpm", "start"]
+EXPOSE 3000
+
+CMD ["pnpm", "start"]
