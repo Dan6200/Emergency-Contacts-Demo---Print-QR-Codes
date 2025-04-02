@@ -23,21 +23,27 @@ services:
     # Override the default command to start redis with own configuration
     command: sh -c "redis-server /usr/local/etc/redis/redis.conf && tail -f /var/log/redis/redis-server.log"
 
-  # certbot:
-  #   image: certbot/certbot
-  #   container_name: certbot
-  #   volumes:
-  #     - certbot-etc:/etc/letsencrypt
-  #     - certbot-var:/var/lib/letsencrypt
-  #     - web-root:/var/www/html
-  #   depends_on: [webserver]
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /var/lib/letsencrypt:/var/lib/letsencrypt
+      - /root/emergency-contacts-print-qr/public:/var/www/html
     # To create the ssl certificate:
-    # command: certonly --webroot --webroot-path=/var/www/html --email danielnyong66@gmail.com --agree-tos --no-eff-email --noninteractive --force-renewal -d linkid.sbs
     # Use the staging flag to avoid rate-limiting
-    # command: certonly --webroot --webroot-path=/var/www/html --email danielnyong66@gmail.com --agree-tos --no-eff-email --noninteractive --staging -d linkid.sbs
-    # To renew every 12 hrs:
+
+    command: certonly --webroot --webroot-path=/var/www/html --email danielnyong66@gmail.com --agree-tos --no-eff-email --noninteractive --staging -d print-qr.emergency-contacts-demo.danielnyo.ng
+
+    # command: certonly --webroot --webroot-path=/var/www/html --email danielnyong66@gmail.com --agree-tos --no-eff-email --noninteractive --force-renewal -d print-qr.emergency-contacts-demo.danielnyo.ng
+    # # To renew every 12 hrs:
     # entrypoint: /bin/sh -c 'trap "exit 0" TERM; while :; do certbot renew; sleep 12h; done'
 
+networks:
+  app-network:
+    driver: bridge
+
+### No need for containerized nginx... using local nginx
   # webserver:
   #   image: nginx:mainline-alpine
   #   container_name: webserver
@@ -52,13 +58,4 @@ services:
   #     - certbot-var:/var/lib/letsencrypt
   #   depends_on: [app]
   #   networks: [app-network]
-  #
-volumes:
-  # certbot-etc:
-  # certbot-var:
-  web-root:
-    driver: local
 
-networks:
-  app-network:
-    driver: bridge

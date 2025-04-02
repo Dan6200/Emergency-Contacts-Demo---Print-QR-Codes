@@ -6,3 +6,4 @@
 Session.vim
 .sw*
 .live-sync-server.sh
+/.next/
