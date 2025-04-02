@@ -61,3 +61,7 @@ Session.vim
 notes.md
 *.pem
 .live-sync-server.sh
+.rsyncignore
+
+# backup files
+*.bak

@@ -29,15 +29,15 @@ services:
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt
       - /var/lib/letsencrypt:/var/lib/letsencrypt
-      - /root/emergency-contacts-print-qr/public:/var/www/html
+      - /var/www/html:/var/www/html
     # To create the ssl certificate:
     # Use the staging flag to avoid rate-limiting
 
-    command: certonly --webroot --webroot-path=/var/www/html --email danielnyong66@gmail.com --agree-tos --no-eff-email --noninteractive --staging -d print-qr.emergency-contacts-demo.danielnyo.ng
+    # command: certonly --webroot --webroot-path=/var/www/html --email danielnyong66@gmail.com --agree-tos --no-eff-email --noninteractive --staging -d print-qr.emergency-contacts-demo.danielnyo.ng
 
     # command: certonly --webroot --webroot-path=/var/www/html --email danielnyong66@gmail.com --agree-tos --no-eff-email --noninteractive --force-renewal -d print-qr.emergency-contacts-demo.danielnyo.ng
-    # # To renew every 12 hrs:
-    # entrypoint: /bin/sh -c 'trap "exit 0" TERM; while :; do certbot renew; sleep 12h; done'
+    # To renew every 12 hrs:
+    entrypoint: /bin/sh -c 'trap "exit 0" TERM; while :; do certbot renew; sleep 12h; done'
 
 networks:
   app-network:
