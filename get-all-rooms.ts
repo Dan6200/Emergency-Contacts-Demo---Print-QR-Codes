@@ -1,7 +1,7 @@
 import {notFound} from "next/navigation";
 import db from "./firebase-server-config";
 import Redis from "ioredis";
-import {generateResidentsPDF} from "./app/route";
+import {generateResidentsPDF} from "./app/generate-pdf";
 
 export async function getAllRooms() {
 	try {
