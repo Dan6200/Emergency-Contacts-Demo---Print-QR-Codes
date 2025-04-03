@@ -11,6 +11,7 @@ RUN pnpm config set store-dir /root/.local/share/pnpm/store/v3
 RUN pnpm install --frozen-lockfile
 COPY . .
 # RUN DISABLE_FIREBASE=true pnpm build
+RUN pnpm build
 
 EXPOSE 3000
 
