@@ -19,20 +19,20 @@ export async function getAllRooms() {
 	}
 }
 
-export function setupResidenceListener(redis: Redis, cacheKey: string) {
-	const roomsCollection = db.collection("residence");
-	roomsCollection.onSnapshot(async () => {
-		try {
-			const pdfBuffer = await generateResidentsPDF();
-			const pdfBase64 = pdfBuffer.toString("base64");
-			await redis.setex(cacheKey, 3600, pdfBase64);
-			console.log("PDF regenerated and cached due to Firestore changes.");
-		} catch (error) {
-			console.error("Failed to regenerate PDF on Firestore change:", error);
-		}
-	});
-}
-
+// export function setupResidenceListener(redis: Redis, cacheKey: string) {
+// 	const roomsCollection = db.collection("residence");
+// 	roomsCollection.onSnapshot(async () => {
+// 		try {
+// 			const pdfBuffer = await generateResidentsPDF();
+// 			const pdfBase64 = pdfBuffer.toString("base64");
+// 			await redis.setex(cacheKey, 3600, pdfBase64);
+// 			console.log("PDF regenerated and cached due to Firestore changes.");
+// 		} catch (error) {
+// 			console.error("Failed to regenerate PDF on Firestore change:", error);
+// 		}
+// 	});
+// }
+//
 /**
  * Checks if the PDF is already cached in Redis. If not, generates the PDF
  * using data from Firestore and caches it. This is useful for ensuring
