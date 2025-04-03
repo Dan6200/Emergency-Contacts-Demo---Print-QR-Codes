@@ -65,3 +65,6 @@ notes.md
 
 # backup files
 *.bak
+
+# dev-tool
+/dev-tools/
