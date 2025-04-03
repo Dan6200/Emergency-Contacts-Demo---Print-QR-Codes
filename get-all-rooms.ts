@@ -20,17 +20,17 @@ export async function getAllRooms() {
 }
 
 export function setupResidenceListener(redis: Redis, cacheKey: string) {
-	// 	const roomsCollection = db.collection("residence");
-	// 	roomsCollection.onSnapshot(async () => {
-	// 		try {
-	// 			const pdfBuffer = await generateResidentsPDF();
-	// 			const pdfBase64 = pdfBuffer.toString("base64");
-	// 			await redis.setex(cacheKey, 3600, pdfBase64);
-	// 			console.log("PDF regenerated and cached due to Firestore changes.");
-	// 		} catch (error) {
-	// 			console.error("Failed to regenerate PDF on Firestore change:", error);
-	// 		}
-	// 	});
+	const roomsCollection = db.collection("residence");
+	roomsCollection.onSnapshot(async () => {
+		try {
+			const pdfBuffer = await generateResidentsPDF();
+			const pdfBase64 = pdfBuffer.toString("base64");
+			await redis.setex(cacheKey, 3600, pdfBase64);
+			console.log("PDF regenerated and cached due to Firestore changes.");
+		} catch (error) {
+			console.error("Failed to regenerate PDF on Firestore change:", error);
+		}
+	});
 }
 
 /**
@@ -43,7 +43,7 @@ export function setupResidenceListener(redis: Redis, cacheKey: string) {
 export async function pregenerateAndCachePDF(redis: Redis, cacheKey: string) {
 	try {
 		const cachedPdf = await redis.get(cacheKey);
-		if (cachedPdf) {
+		if (cachedPdf && process.env.DISABLE_FIREBASE) {
 			console.log("PDF already pre-cached.");
 			return;
 		}
