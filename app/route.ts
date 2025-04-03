@@ -21,8 +21,6 @@ export const dynamic = "force-dynamic";
 
 export async function GET() {
 	const cacheKey = "residents-pdf";
-
-
 	try {
 		const cachedPDF = await redis.get(cacheKey);
 		if (cachedPDF) {
