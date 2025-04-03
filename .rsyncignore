@@ -1,9 +1,10 @@
 .git/
 .github
-/node_modules/
+node_modules/
 .dockerignore
 .gitignore
 Session.vim
 .sw*
-.live-sync-server.sh
-/.next/
+*bak
+.next/
+dev-tools/

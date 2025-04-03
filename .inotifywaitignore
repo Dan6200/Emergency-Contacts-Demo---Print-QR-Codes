@@ -1,0 +1,10 @@
+@.git/
+@.github
+@/node_modules/
+@.dockerignore
+@.gitignore
+@Session.vim
+@.sw*
+@*bak
+@/.next/
+@/dev-tools/
