@@ -12,7 +12,7 @@ export async function generateResidentsPDF(): Promise<Buffer> {
 
 	await Promise.all(
 		rooms.map(
-			async ({id, roomNo, address}: Residence & {id: string}, idx) => {
+			async ({id, roomNo, address}: Residence & {id: string}, idx: number) => {
 				const qrCodeDataUri = await QRcode.toDataURL(
 					new URL(`/room/${id}/`, process.env.DOMAIN).toString()
 				);
