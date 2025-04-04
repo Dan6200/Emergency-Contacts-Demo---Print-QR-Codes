@@ -17,42 +17,57 @@ setupResidenceListener(redis, "residents-pdf");
 // You can convert the logo into base64 using an online tool and place the result here
 
 export async function GET() {
-	// const cacheKey = "residents-pdf";
+	const cacheKey = "residents-pdf";
 	try {
-		// const cachedPDF = await redis.get(cacheKey);
-		const pdfBuffer = Buffer.from('%PDF-1.4\n1 0 obj\n<< /Type /Catalog >>\nendobj\ntrailer\n<< >>\n%%EOF');
-		// if (cachedPDF) {
-		// const pdfBuffer = Buffer.from(cachedPDF, "base64")
-		return new Response(
-			pdfBuffer,
-			{
-				headers: {
-					"content-type": "application/pdf",
-					"content-disposition":
-						'attachment; filename="Residents Qr Codes.pdf"',
-					"content-length": pdfBuffer.length.toString()
-				},
-			}
-		);
-		// }
+		const cachedPDF = await redis.get(cacheKey);
+		if (cachedPDF) {
+			const pdfBuffer = Buffer.from(cachedPDF, "base64")
+			return new Response(
+				pdfBuffer,
+				{
+					headers: {
+						"content-type": "application/pdf",
+						"content-disposition":
+							'attachment; filename="Residents Qr Codes.pdf"',
+						"content-length": pdfBuffer.length.toString(),
+						// Explicitly prevent compression/modification
+						"content-encoding": "identity",
+					},
+				}
+			);
+		}
 	} catch (error) {
-		console.error("Redis get operation failed!");
+		console.error("Redis get operation failed!", error); // Log the actual error
 	}
-	// 	try {
-	// 		const pdfBuffer = await generateResidentsPDF();
-	// 		const pdfBase64 = pdfBuffer.toString("base64");
-	//
-	//
-	// 		await redis.setex(cacheKey, 3600, pdfBase64);
-	//
-	// 		return new Response(pdfBuffer, {
-	// 			headers: {
-	// 				"content-type": "application/pdf",
-	// 				"content-disposition": 'attachment; filename="Residents Qr Codes.pdf"',
-	// 				"content-length": pdfBuffer.length.toString()
-	// 			},
-	// 		});
-	// 	} catch (error) {
-	// 		console.error("Printing QR's failed: ", error);
-	// 	}
+	try {
+		const pdfBuffer = await generateResidentsPDF();
+		const pdfBase64 = pdfBuffer.toString("base64");
+
+		// Set cache only if pdfBuffer is not empty
+		if (pdfBuffer.length > 0) {
+			// Use await with try...catch for Redis setex
+			try {
+				await redis.setex(cacheKey, 3600, pdfBase64);
+			} catch (redisError) {
+				console.error("Redis setex operation failed!", redisError);
+				// Decide if you want to proceed without caching or return an error
+			}
+		} else {
+			console.warn("Generated PDF buffer is empty. Not caching.");
+		}
+
+		return new Response(pdfBuffer, {
+			headers: {
+				"content-type": "application/pdf",
+				"content-disposition": 'attachment; filename="Residents Qr Codes.pdf"',
+				"content-length": pdfBuffer.length.toString(),
+				// Explicitly prevent compression/modification
+				"content-encoding": "identity",
+			},
+		});
+	} catch (error) {
+		console.error("Printing QR's failed: ", error);
+		// Return an actual error response
+		return new Response("Failed to generate PDF.", {status: 500});
+	}
 }
