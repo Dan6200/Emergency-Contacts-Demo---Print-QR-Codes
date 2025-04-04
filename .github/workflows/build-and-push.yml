@@ -8,15 +8,15 @@ on:
     branches: [main]
 
 jobs:
-  check-docker:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get Docker Version
-        run: echo "DOCKER_VERSION=$(docker --version | awk '{print $3}')" >> $GITHUB_ENV
-      - name: Use Docker Version
-        run: echo "Docker version is---${{ env.DOCKER_VERSION }}"
+  # check-docker:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Get Docker Version
+  #       run: echo "DOCKER_VERSION=$(docker --version | awk '{print $3}')" >> $GITHUB_ENV
   build:
     runs-on: ubuntu-latest
+    env:
+      DOCKER_BUILDKIT: 1
     steps:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
