@@ -43,7 +43,7 @@ export function setupResidenceListener(redis: Redis, cacheKey: string) {
 export async function pregenerateAndCachePDF(redis: Redis, cacheKey: string) {
 	try {
 		const cachedPdf = await redis.get(cacheKey);
-		if (cachedPdf && process.env.DISABLE_FIREBASE) {
+		if (cachedPdf) {
 			console.log("PDF already pre-cached.");
 			return;
 		}
