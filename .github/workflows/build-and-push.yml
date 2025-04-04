@@ -15,30 +15,30 @@ jobs:
         run: echo "DOCKER_VERSION=$(docker --version | awk '{print $3}')" >> $GITHUB_ENV
       - name: Use Docker Version
         run: echo "Docker version is: ${{ env.DOCKER_VERSION }}"
-  # build:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Set up Docker Buildx
-  #       uses: docker/setup-buildx-action@v3
-  #     - name: Login to Docker Hub
-  #       uses: docker/login-action@v3
-  #       with:
-  #         username: ${{secrets.DOCKERHUB_USERNAME}}
-  #         password: ${{secrets.DOCKERHUB_PASSWORD}}
-  #     - name: Build and Push
-  #       uses: docker/build-push-action@v5
-  #       with:
-  #         push: true
-  #         tags: ${{secrets.DOCKERHUB_USERNAME}}/emergency-contacts-print-qr:latest
-  #         no-cache: true
-  #         # Pass actual secrets needed during build
-  #         secrets: |
-  #           redis_password=${{ secrets.REDIS_PASSWORD }}
-  #           fb_project_id=${{ secrets.FB_PROJECT_ID }}
-  #           fb_client_email=${{ secrets.FB_CLIENT_EMAIL }}
-  #           fb_private_key=${{ secrets.FB_PRIVATE_KEY }}
-  #         # Pass non-sensitive config as build arguments from environment variables
-  #         build-args: |
-  #           REDIS_HOST=${{ env.REDIS_HOST }}
-  #           REDIS_PORT=${{ env.REDIS_PORT }}
-  #           DOMAIN=${{ env.DOMAIN }}
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{secrets.DOCKERHUB_USERNAME}}
+          password: ${{secrets.DOCKERHUB_PASSWORD}}
+      - name: Build and Push
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/emergency-contacts-print-qr:latest
+          no-cache: true
+          # Pass actual secrets needed during build
+          secrets: |
+            redis_password=${{ secrets.REDIS_PASSWORD }}
+            fb_project_id=${{ secrets.FB_PROJECT_ID }}
+            fb_client_email=${{ secrets.FB_CLIENT_EMAIL }}
+            fb_private_key=${{ secrets.FB_PRIVATE_KEY }}
+          # Pass non-sensitive config as build arguments from environment variables
+          build-args: |
+            REDIS_HOST=${{ env.REDIS_HOST }}
+            REDIS_PORT=${{ env.REDIS_PORT }}
+            DOMAIN=${{ env.DOMAIN }}
