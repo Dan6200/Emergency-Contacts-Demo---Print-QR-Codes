@@ -18,24 +18,24 @@ RUN pnpm install --frozen-lockfile
 # Copy the rest of the application code
 COPY . .
 
-# Build the application, mounting secrets and setting build-time env vars
+# Build the application, accepting build arguments and mounting secrets
 ARG REDIS_HOST
 ARG REDIS_PORT
 ARG DOMAIN
 
 # Set runtime environment variables from build arguments
+# These ARGs are also available as env vars during the build stage
 ENV REDIS_HOST=${REDIS_HOST}
 ENV REDIS_PORT=${REDIS_PORT}
 ENV DOMAIN=${DOMAIN}
 
 # Secrets are only available during this RUN command
+# Build arguments (REDIS_HOST, etc.) are already available as environment variables here
 RUN --mount=type=secret,id=redis_password \
     --mount=type=secret,id=fb_project_id \
     --mount=type=secret,id=fb_client_email \
     --mount=type=secret,id=fb_private_key \
-    --mount=type=secret,id=redis_host \
-    --mount=type=secret,id=redis_port \
-    --mount=type=secret,id=domain \
+
     export REDIS_PASSWORD=$(cat /run/secrets/redis_password) && \
     export FB_PROJECT_ID=$(cat /run/secrets/fb_project_id) && \
     export FB_CLIENT_EMAIL=$(cat /run/secrets/fb_client_email) && \

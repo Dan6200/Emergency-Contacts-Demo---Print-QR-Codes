@@ -24,12 +24,14 @@ jobs:
           push: true
           tags: ${{secrets.DOCKERHUB_USERNAME}}/emergency-contacts-print-qr:latest
           no-cache: true
+          # Pass actual secrets needed during build
           secrets: |
             redis_password=${{ secrets.REDIS_PASSWORD }}
             fb_project_id=${{ secrets.FB_PROJECT_ID }}
             fb_client_email=${{ secrets.FB_CLIENT_EMAIL }}
             fb_private_key=${{ secrets.FB_PRIVATE_KEY }}
-          env: |
-            redis_host=${{ env.REDIS_HOST }}
-            redis_port=${{ env.REDIS_PORT }}
-            domain=${{ env.DOMAIN }}
+          # Pass non-sensitive config as build arguments from environment variables
+          build-args: |
+            REDIS_HOST=${{ env.REDIS_HOST }}
+            REDIS_PORT=${{ env.REDIS_PORT }}
+            DOMAIN=${{ env.DOMAIN }}
