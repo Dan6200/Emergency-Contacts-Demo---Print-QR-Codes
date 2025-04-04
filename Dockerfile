@@ -5,25 +5,20 @@ LABEL name="emergency-contacts-print-qr"
 # Create app dir
 WORKDIR /app
 
-# Declare build arguments for secrets/config
-ARG REDIS_HOST
-ARG REDIS_PORT
-ARG REDIS_PASSWORD
-ARG DOMAIN
-ARG FB_PROJECT_ID
-ARG FB_CLIENT_EMAIL
-ARG FB_PRIVATE_KEY
+# Secret definitions (will be mounted at build time)
+RUN --mount=type=secret,id=redis_password \
+    --mount=type=secret,id=fb_project_id \
+    --mount=type=secret,id=fb_client_email \
+    --mount=type=secret,id=fb_private_key \
+    export REDIS_HOST=${REDIS_HOST} && \
+    export REDIS_PORT=${REDIS_PORT} && \
+    export DOMAIN=${DOMAIN} && \
+    export REDIS_PASSWORD=$(cat /run/secrets/redis_password) && \
 
-# Set runtime environment variables from build arguments
-ENV REDIS_HOST=${REDIS_HOST}
-ENV REDIS_PORT=${REDIS_PORT}
-ENV REDIS_PASSWORD=${REDIS_PASSWORD}
-ENV DOMAIN=${DOMAIN}
-ENV FB_PROJECT_ID=${FB_PROJECT_ID}
-ENV FB_CLIENT_EMAIL=${FB_CLIENT_EMAIL}
-# Note: Ensure your application handles the FB_PRIVATE_KEY correctly, especially regarding newlines.
-# Docker's ENV instruction generally handles multi-line values passed via build-args correctly.
-ENV FB_PRIVATE_KEY=${FB_PRIVATE_KEY}
+    export FB_PROJECT_ID=$(cat /run/secrets/fb_project_id) && \
+    export FB_CLIENT_EMAIL=$(cat /run/secrets/fb_client_email) && \
+    export FB_PRIVATE_KEY=$(cat /run/secrets/fb_private_key) && \
+    pnpm build
 
 COPY package.json pnpm-lock.yaml ./
 RUN npm install -g pnpm@9.11
