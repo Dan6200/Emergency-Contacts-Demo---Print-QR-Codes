@@ -7,6 +7,7 @@ const {credential} = fbAdmin;
 let auth = null;
 let db = null;
 
+console.log(process.env.REDIS_HOST)
 // Dont run during build as build env has no env secrets
 const appName = "emergency-contact-demo-print-qr";
 if (!fbAdmin.apps.find((app) => app?.name === appName))
@@ -22,7 +23,6 @@ if (!fbAdmin.apps.find((app) => app?.name === appName))
 	);
 auth = getAuth(getApp(appName));
 db = getFirestore(getApp(appName));
-console.log(process.env.REDIS_HOST)
 
 export {auth};
 export default db;
