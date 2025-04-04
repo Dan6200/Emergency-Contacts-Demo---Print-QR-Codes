@@ -19,7 +19,7 @@ jobs:
           username: ${{secrets.DOCKERHUB_USERNAME}}
           password: ${{secrets.DOCKERHUB_PASSWORD}}
   build:
-    # environment: build
+    environment: build
     runs-on: ubuntu-latest
     env:
       DOCKER_BUILDKIT: 1
