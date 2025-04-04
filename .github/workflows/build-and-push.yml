@@ -38,7 +38,4 @@ jobs:
             fb_client_email=${{ secrets.FB_CLIENT_EMAIL }}
             fb_private_key=${{ secrets.FB_PRIVATE_KEY }}
           # Pass non-sensitive config as build arguments from environment variables
-          build-args: |
-            REDIS_HOST=${{ env.REDIS_HOST }}
-            REDIS_PORT=${{ env.REDIS_PORT }}
-            DOMAIN=${{ env.DOMAIN }}
+          build-args: REDIS_HOST=${{ env.REDIS_HOST }} REDIS_PORT=${{ env.REDIS_PORT }} DOMAIN=${{ env.DOMAIN }}
