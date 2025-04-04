@@ -14,7 +14,7 @@ jobs:
       - name: Get Docker Version
         run: echo "DOCKER_VERSION=$(docker --version | awk '{print $3}')" >> $GITHUB_ENV
       - name: Use Docker Version
-        run: echo "Docker version is: ${{ env.DOCKER_VERSION }}"
+        run: echo "Docker version is: error"
   build:
     runs-on: ubuntu-latest
     steps:
