@@ -14,7 +14,6 @@ RUN --mount=type=secret,id=redis_password \
     export REDIS_PORT=${REDIS_PORT} && \
     export DOMAIN=${DOMAIN} && \
     export REDIS_PASSWORD=$(cat /run/secrets/redis_password) && \
-
     export FB_PROJECT_ID=$(cat /run/secrets/fb_project_id) && \
     export FB_CLIENT_EMAIL=$(cat /run/secrets/fb_client_email) && \
     export FB_PRIVATE_KEY=$(cat /run/secrets/fb_private_key) && \
