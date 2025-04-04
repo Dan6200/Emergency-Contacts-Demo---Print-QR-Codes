@@ -16,44 +16,43 @@ setupResidenceListener(redis, "residents-pdf");
 // Add base64 for the logo if you want it embedded
 // You can convert the logo into base64 using an online tool and place the result here
 
-export const dynamic = "force-dynamic";
-
 export async function GET() {
-	const cacheKey = "residents-pdf";
+	// const cacheKey = "residents-pdf";
 	try {
-		const cachedPDF = await redis.get(cacheKey);
-		if (cachedPDF) {
-			const pdfBuffer = Buffer.from(cachedPDF, "base64")
-			return new Response(
-				pdfBuffer,
-				{
-					headers: {
-						"content-type": "application/pdf",
-						"content-disposition":
-							'attachment; filename="Residents Qr Codes.pdf"',
-						"content-length": pdfBuffer.length.toString()
-					},
-				}
-			);
-		}
+		// const cachedPDF = await redis.get(cacheKey);
+		const pdfBuffer = Buffer.from('%PDF-1.4\n1 0 obj\n<< /Type /Catalog >>\nendobj\ntrailer\n<< >>\n%%EOF');
+		// if (cachedPDF) {
+		// const pdfBuffer = Buffer.from(cachedPDF, "base64")
+		return new Response(
+			pdfBuffer,
+			{
+				headers: {
+					"content-type": "application/pdf",
+					"content-disposition":
+						'attachment; filename="Residents Qr Codes.pdf"',
+					"content-length": pdfBuffer.length.toString()
+				},
+			}
+		);
+		// }
 	} catch (error) {
 		console.error("Redis get operation failed!");
 	}
-	try {
-		const pdfBuffer = await generateResidentsPDF();
-		const pdfBase64 = pdfBuffer.toString("base64");
-
-
-		await redis.setex(cacheKey, 3600, pdfBase64);
-
-		return new Response(pdfBuffer, {
-			headers: {
-				"content-type": "application/pdf",
-				"content-disposition": 'attachment; filename="Residents Qr Codes.pdf"',
-				"content-length": pdfBuffer.length.toString()
-			},
-		});
-	} catch (error) {
-		console.error("Printing QR's failed: ", error);
-	}
+	// 	try {
+	// 		const pdfBuffer = await generateResidentsPDF();
+	// 		const pdfBase64 = pdfBuffer.toString("base64");
+	//
+	//
+	// 		await redis.setex(cacheKey, 3600, pdfBase64);
+	//
+	// 		return new Response(pdfBuffer, {
+	// 			headers: {
+	// 				"content-type": "application/pdf",
+	// 				"content-disposition": 'attachment; filename="Residents Qr Codes.pdf"',
+	// 				"content-length": pdfBuffer.length.toString()
+	// 			},
+	// 		});
+	// 	} catch (error) {
+	// 		console.error("Printing QR's failed: ", error);
+	// 	}
 }
