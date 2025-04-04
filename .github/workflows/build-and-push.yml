@@ -25,10 +25,10 @@ jobs:
           tags: ${{secrets.DOCKERHUB_USERNAME}}/emergency-contacts-print-qr:latest
           no-cache: true
           build-args: |
-            REDIS_HOST=${{ secrets.REDIS_HOST }}
-            REDIS_PORT=${{ secrets.REDIS_PORT }}
+            REDIS_HOST=${{ env.REDIS_HOST }}
+            REDIS_PORT=${{ env.REDIS_PORT }}
             REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
-            DOMAIN=${{ secrets.DOMAIN }}
+            DOMAIN=${{ env.DOMAIN }}
             FB_PROJECT_ID=${{ secrets.FB_PROJECT_ID }}
             FB_CLIENT_EMAIL=${{ secrets.FB_CLIENT_EMAIL }}
             FB_PRIVATE_KEY=${{ secrets.FB_PRIVATE_KEY }}
