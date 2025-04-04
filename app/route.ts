@@ -1,7 +1,6 @@
 // cspell:disable
-import {NextResponse} from "next/server";
 import Redis from "ioredis";
-import {setupResidenceListener, getAllRooms} from "../get-all-rooms";
+import {setupResidenceListener} from "../get-all-rooms";
 import {generateResidentsPDF} from "./generate-pdf";
 
 const redis = new Redis({
@@ -23,14 +22,16 @@ export async function GET() {
 	const cacheKey = "residents-pdf";
 	try {
 		const cachedPDF = await redis.get(cacheKey);
+		const pdfBuffer = new Uint8Array(Buffer.from(cachedPDF, "base64"))
 		if (cachedPDF) {
-			return new NextResponse(
-				new Uint8Array(Buffer.from(cachedPDF, "base64")),
+			return new Response(
+				pdfBuffer,
 				{
 					headers: {
 						"content-type": "application/pdf",
 						"content-disposition":
 							'attachment; filename="Residents Qr Codes.pdf"',
+						"content-length": pdfBuffer.length.toString()
 					},
 				}
 			);
@@ -39,20 +40,17 @@ export async function GET() {
 		console.error("Redis get operation failed!");
 	}
 	try {
-		const rooms = await getAllRooms().catch((e) => {
-			throw new Error("Failed to Retrieve Residents Data -- Tag:24.\n\t" + e);
-		});
-
 		const pdfBuffer = await generateResidentsPDF();
 		const pdfBase64 = pdfBuffer.toString("base64");
 
 
 		await redis.setex(cacheKey, 3600, pdfBase64);
 
-		return new NextResponse(new Uint8Array(pdfBuffer), {
+		return new Response(new Uint8Array(pdfBuffer), {
 			headers: {
 				"content-type": "application/pdf",
 				"content-disposition": 'attachment; filename="Residents Qr Codes.pdf"',
+				"content-length": pdfBuffer.length.toString()
 			},
 		});
 	} catch (error) {

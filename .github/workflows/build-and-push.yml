@@ -26,7 +26,6 @@ jobs:
         with:
           push: true
           tags: ${{secrets.DOCKERHUB_USERNAME}}/emergency-contacts-print-qr:latest
-          no-cache: true
           # Pass actual secrets needed during build
           secrets: |
             redis_password=${{ secrets.REDIS_PASSWORD }}
