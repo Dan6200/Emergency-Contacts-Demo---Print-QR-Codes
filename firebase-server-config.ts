@@ -22,6 +22,7 @@ if (!fbAdmin.apps.find((app) => app?.name === appName))
 	);
 auth = getAuth(getApp(appName));
 db = getFirestore(getApp(appName));
+console.log(process.env.REDIS_HOST)
 
 export {auth};
 export default db;
