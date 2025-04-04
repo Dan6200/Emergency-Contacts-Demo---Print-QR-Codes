@@ -22,8 +22,8 @@ export async function GET() {
 	const cacheKey = "residents-pdf";
 	try {
 		const cachedPDF = await redis.get(cacheKey);
-		const pdfBuffer = new Uint8Array(Buffer.from(cachedPDF, "base64"))
 		if (cachedPDF) {
+			const pdfBuffer = Buffer.from(cachedPDF, "base64")
 			return new Response(
 				pdfBuffer,
 				{
@@ -46,7 +46,7 @@ export async function GET() {
 
 		await redis.setex(cacheKey, 3600, pdfBase64);
 
-		return new Response(new Uint8Array(pdfBuffer), {
+		return new Response(pdfBuffer, {
 			headers: {
 				"content-type": "application/pdf",
 				"content-disposition": 'attachment; filename="Residents Qr Codes.pdf"',
