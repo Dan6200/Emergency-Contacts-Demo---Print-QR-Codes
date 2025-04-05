@@ -11,7 +11,7 @@ export async function generateResidentsPDF(): Promise<Buffer> {
 	const doc = new jsPDF();
 
 	await Promise.all(
-		rooms.slice(0, 100).map(
+		rooms.map(
 			async ({id, roomNo, address}: Residence & {id: string}, idx: number) => {
 				const qrCodeDataUri = await QRcode.toDataURL(
 					new URL(`/room/${id}/`, process.env.DOMAIN).toString()
@@ -53,7 +53,7 @@ export async function generateResidentsPDF(): Promise<Buffer> {
 		)
 	);
 
-	return Buffer.from(doc.output("arraybuffer"));
+	return Buffer.from(new Uint8Array(doc.output("arraybuffer")));
 }
 
 
