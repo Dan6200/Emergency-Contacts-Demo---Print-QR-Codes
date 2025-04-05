@@ -18,9 +18,7 @@ RUN pnpm install --frozen-lockfile
 # Copy the rest of the application code
 COPY . .
 
-# Copy PDFKit font metrics files
-RUN mkdir -p /app/node_modules/pdfkit/js/data && \
-    cp -r node_modules/pdfkit/js/data/* /app/node_modules/pdfkit/js/data/
+# Get PDFKit font metrics files (now handled automatically by PDFKIT_DISABLE_FONTCONFIG=1)
 
 # Build the application, accepting build arguments and mounting secrets
 ARG REDIS_HOST
