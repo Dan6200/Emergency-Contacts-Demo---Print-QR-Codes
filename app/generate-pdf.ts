@@ -30,9 +30,9 @@ export async function generateResidentsPDF() {
 				);
 
 				doc.fontSize(20);
-				doc.font("Helvetica", "bold");
+	doc.font("Helvetica");
 				doc.text("RESIDENT INFORMATION - SCAN TO REVEAL", 30, 90);
-				doc.font("Helvetica", "normal");
+	doc.font("Helvetica");
 
 				doc.lineWidth(8);
 				doc.strokeColor('red');

@@ -18,6 +18,10 @@ RUN pnpm install --frozen-lockfile
 # Copy the rest of the application code
 COPY . .
 
+# Copy PDFKit font metrics files
+RUN mkdir -p /app/node_modules/pdfkit/js/data && \
+    cp -r node_modules/pdfkit/js/data/* /app/node_modules/pdfkit/js/data/
+
 # Build the application, accepting build arguments and mounting secrets
 ARG REDIS_HOST
 ARG REDIS_PORT
@@ -28,6 +32,7 @@ ARG DOMAIN
 ENV REDIS_HOST=${REDIS_HOST}
 ENV REDIS_PORT=${REDIS_PORT}
 ENV DOMAIN=${DOMAIN}
+ENV PDFKIT_DISABLE_FONTCONFIG=1
 
 # Secrets are only available during this RUN command
 # Build arguments (REDIS_HOST, etc.) are already available as environment variables here
@@ -44,5 +49,10 @@ RUN --mount=type=secret,id=redis_password \
 
 
 EXPOSE 3000
+
+# Create and switch to non-root user for security
+RUN useradd -r -u 1001 appuser && \
+    chown -R appuser:appuser /app
+USER appuser
 
 CMD ["pnpm", "start"]
