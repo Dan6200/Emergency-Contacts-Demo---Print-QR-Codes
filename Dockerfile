@@ -32,6 +32,9 @@ ENV REDIS_PORT=${REDIS_PORT}
 ENV DOMAIN=${DOMAIN}
 ENV PDFKIT_DISABLE_FONTCONFIG=1
 
+# Create persistent storage directory
+RUN mkdir -p /app/persistent
+
 # Secrets are only available during this RUN command
 # Build arguments (REDIS_HOST, etc.) are already available as environment variables here
 RUN --mount=type=secret,id=redis_password \

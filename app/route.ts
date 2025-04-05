@@ -43,14 +43,14 @@ export async function GET() {
 	}
 	try {
 		await generateResidentsPDF();
-		const pdf = path.resolve('/tmp/Residents_QR_Code.pdf')
-		const stat = await fs.promises.stat(pdf)
+		const pdfPath = path.resolve('/app/persistent/Residents_QR_Code.pdf')
+		const stat = await fs.promises.stat(pdfPath)
 
 		// Set cache only if pdfBuffer is not empty
-		if (pdf) {
+		if (pdfPath) {
 			// Use await with try...catch for Redis setex
 			try {
-				await redis.setex(cacheKey, 3600, pdf);
+				await redis.setex(cacheKey, 3600, pdfPath);
 			} catch (redisError) {
 				console.error("Redis setex operation failed!", redisError);
 				// Decide if you want to proceed without caching or return an error
@@ -59,7 +59,7 @@ export async function GET() {
 			console.warn("Generated PDF does not exist. Not caching.");
 		}
 
-		return new Response(pdf, {
+		return new Response(pdfPath, {
 			headers: {
 				"content-type": "application/pdf",
 				"content-disposition": 'attachment; filename="Residents Qr Codes.pdf"',

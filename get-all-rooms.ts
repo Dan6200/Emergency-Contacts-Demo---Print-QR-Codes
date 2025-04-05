@@ -25,8 +25,8 @@ export function setupResidenceListener(redis: Redis, cacheKey: string) {
 	roomsCollection.onSnapshot(async () => {
 		try {
 			await generateResidentsPDF();
-			const pdf = path.resolve('/tmp/Residents_QR_Code.pdf')
-			await redis.setex(cacheKey, 3600, pdf);
+			const pdfPath = path.resolve('/app/persistent/Residents_QR_Code.pdf')
+			await redis.setex(cacheKey, 3600, pdfPath);
 			console.log("PDF regenerated and cached due to Firestore changes.");
 		} catch (error) {
 			console.error("Failed to regenerate PDF on Firestore change:", error);

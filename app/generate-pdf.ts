@@ -9,7 +9,7 @@ export async function generateResidentsPDF() {
 	});
 
 	const doc = new jsPDF();
-	const filePath = path.resolve('/tmp/Residents_QR_Code.pdf')
+	const filePath = path.resolve('/app/persistent/Residents_QR_Code.pdf')
 	doc.save(filePath);
 
 	await Promise.all(
