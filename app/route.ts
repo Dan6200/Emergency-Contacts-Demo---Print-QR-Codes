@@ -52,7 +52,7 @@ export async function GET() {
 			try {
 				await redis.setex(cacheKey, 3600, pdfPath);
 			} catch (redisError) {
-				console.error("Redis setex operation failed!", redisError);
+				throw new Error("Redis setex operation failed!" + redisError.toString());
 				// Decide if you want to proceed without caching or return an error
 			}
 		} else {

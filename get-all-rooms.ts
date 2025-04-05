@@ -29,7 +29,7 @@ export function setupResidenceListener(redis: Redis, cacheKey: string) {
 			await redis.setex(cacheKey, 3600, pdfPath);
 			console.log("PDF regenerated and cached due to Firestore changes.");
 		} catch (error) {
-			console.error("Failed to regenerate PDF on Firestore change:", error);
+			throw new Error("Failed to regenerate PDF on Firestore change:" + error.toString());
 		}
 	});
 }

@@ -19,12 +19,12 @@ export async function pregenerateAndCachePDF(redis: Redis, cacheKey: string) {
 
 		console.log("Pregenerating and caching PDF...");
 		await generateResidentsPDF();
-		const pdf = path.resolve('/tmp/Residents_QR_Code.pdf')
+		const pdf = path.resolve('/app/persistent/Residents_QR_Code.pdf')
 		// Use the same TTL (Time To Live) as the listener for consistency
 		await redis.setex(cacheKey, 3600, pdf);
 		console.log("PDF pregenerated and cached successfully.");
 	} catch (error) {
-		console.error("Failed to pregenerate and cache PDF:", error);
+		throw new Error("Failed to pregenerate and cache PDF:" + error.toString());
 		// Depending on your application's needs, you might want to handle this error more gracefully
 		// or even prevent the application from starting if the initial PDF is critical.
 	}
