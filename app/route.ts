@@ -1,7 +1,7 @@
 // cspell:disable
 import Redis from "ioredis";
 import {setupResidenceListener} from "../get-all-rooms";
-import {generateResidentsPDF} from "./generate-pdf";
+import {generateResidentsPDF} from "../generate-pdf";
 import fs from 'fs'
 import path from "path";
 

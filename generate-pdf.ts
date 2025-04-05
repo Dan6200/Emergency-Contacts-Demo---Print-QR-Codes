@@ -1,6 +1,6 @@
 import jsPDF from 'jspdf';
 import QRcode from "qrcode";
-import {getAllRooms, Residence} from "../get-all-rooms";
+import {getAllRooms, Residence} from "./get-all-rooms";
 import path from 'path'
 
 export async function generateResidentsPDF() {
