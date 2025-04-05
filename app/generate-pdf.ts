@@ -30,9 +30,9 @@ export async function generateResidentsPDF() {
 				);
 
 				doc.fontSize(20);
-	doc.font("Helvetica");
+				// doc.font("Helvetica");
 				doc.text("RESIDENT INFORMATION - SCAN TO REVEAL", 30, 90);
-	doc.font("Helvetica");
+				// doc.font("Helvetica");
 
 				doc.lineWidth(8);
 				doc.strokeColor('red');
@@ -41,7 +41,7 @@ export async function generateResidentsPDF() {
 
 				// Use doc.image for data URIs
 				doc.image(qrCodeDataUri, 75, 100, {width: 60, height: 60});
-				doc.font("Helvetica", "bold");
+				// doc.font("bold");
 				doc.text("INSTANT ACCESS TO EMERGENCY INFO", 35, 183);
 
 				// Extract the part of the address before the first digit, assumed to be the street name.
@@ -59,7 +59,7 @@ export async function generateResidentsPDF() {
 				const streetName = streetRaw.filter((word) => regex.test(word));
 
 				doc.fontSize(16);
-				doc.font("Helvetica", "normal");
+				// doc.font("Helvetica", "normal");
 				// Join with space for readability
 				doc.text(streetName.join(" "), 75, 173);
 				doc.text("-", 112, 173);
