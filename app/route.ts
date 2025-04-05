@@ -27,8 +27,7 @@ export async function GET() {
 				{
 					headers: {
 						"content-type": "application/pdf",
-						"content-disposition":
-							'attachment; filename="Residents Qr Codes.pdf"',
+						"content-disposition": 'attachment; filename="Residents Qr Codes.pdf"',
 						"content-length": pdfBuffer.length.toString(),
 						// Explicitly prevent compression/modification
 						"content-encoding": "identity",
