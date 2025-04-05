@@ -53,7 +53,7 @@ export async function generateResidentsPDF(): Promise<Buffer> {
 		)
 	);
 
-	return Buffer.from(doc.output("arraybuffer"));
+	return Buffer.from(new Uint8Array(doc.output("arraybuffer")));
 }
 
 
