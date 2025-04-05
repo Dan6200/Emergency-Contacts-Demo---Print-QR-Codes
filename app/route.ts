@@ -2,6 +2,8 @@
 import Redis from "ioredis";
 import {setupResidenceListener} from "../get-all-rooms";
 import {generateResidentsPDF} from "./generate-pdf";
+import fs from 'fs'
+import path from "path";
 
 const redis = new Redis({
 	host: process.env.REDIS_HOST,
@@ -21,14 +23,15 @@ export async function GET() {
 	try {
 		const cachedPDF = await redis.get(cacheKey);
 		if (cachedPDF) {
-			const pdfBuffer = Buffer.from(cachedPDF, "base64")
+			const pdf = cachedPDF
+			const stat = await fs.promises.stat(pdf)
 			return new Response(
-				pdfBuffer,
+				pdf,
 				{
 					headers: {
 						"content-type": "application/pdf",
 						"content-disposition": 'attachment; filename="Residents Qr Codes.pdf"',
-						"content-length": pdfBuffer.length.toString(),
+						"content-length": stat.size.toString(),
 						// Explicitly prevent compression/modification
 						"content-encoding": "identity",
 					},
@@ -39,27 +42,28 @@ export async function GET() {
 		console.error("Redis get operation failed!", error); // Log the actual error
 	}
 	try {
-		const pdfBuffer = await generateResidentsPDF();
-		const pdfBase64 = pdfBuffer.toString("base64");
+		await generateResidentsPDF();
+		const pdf = path.resolve('/tmp/Residents_QR_Code.pdf')
+		const stat = await fs.promises.stat(pdf)
 
 		// Set cache only if pdfBuffer is not empty
-		if (pdfBuffer.length > 0) {
+		if (pdf) {
 			// Use await with try...catch for Redis setex
 			try {
-				await redis.setex(cacheKey, 3600, pdfBase64);
+				await redis.setex(cacheKey, 3600, pdf);
 			} catch (redisError) {
 				console.error("Redis setex operation failed!", redisError);
 				// Decide if you want to proceed without caching or return an error
 			}
 		} else {
-			console.warn("Generated PDF buffer is empty. Not caching.");
+			console.warn("Generated PDF does not exist. Not caching.");
 		}
 
-		return new Response(pdfBuffer, {
+		return new Response(pdf, {
 			headers: {
 				"content-type": "application/pdf",
 				"content-disposition": 'attachment; filename="Residents Qr Codes.pdf"',
-				"content-length": pdfBuffer.length.toString(),
+				"content-length": stat.size.toString(),
 				// Explicitly prevent compression/modification
 				"content-encoding": "identity",
 			},

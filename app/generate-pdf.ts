@@ -2,6 +2,7 @@ import PDFDocument from 'pdfkit';
 import QRcode from "qrcode";
 import {getAllRooms, Residence} from "../get-all-rooms";
 import fs from 'fs'
+import path from 'path'
 
 export async function generateResidentsPDF() {
 	const rooms = await getAllRooms().catch((e) => {
@@ -9,7 +10,9 @@ export async function generateResidentsPDF() {
 	});
 
 	const doc = new PDFDocument();
-	doc.pipe(fs.createWriteStream('/tmp/Residents_QR_Code.pdf'))
+	const filePath = path.resolve('/tmp/Residents_QR_Code.pdf')
+	const writeStream = fs.createWriteStream(filePath);
+	doc.pipe(writeStream);
 
 	await Promise.all(
 		rooms.map(
@@ -66,7 +69,9 @@ export async function generateResidentsPDF() {
 			}
 		)
 	);
-	doc.end()
+	doc.end();
+	return new Promise((resolve, reject) => {
+		writeStream.on('finish', () => resolve(filePath));
+		writeStream.on('error', reject);
+	});
 }
-
-

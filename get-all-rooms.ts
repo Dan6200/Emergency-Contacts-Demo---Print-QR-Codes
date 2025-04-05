@@ -2,6 +2,7 @@ import {notFound} from "next/navigation";
 import db from "./firebase-server-config";
 import Redis from "ioredis";
 import {generateResidentsPDF} from "./app/generate-pdf";
+import path from "path";
 
 export async function getAllRooms() {
 	try {
@@ -23,9 +24,9 @@ export function setupResidenceListener(redis: Redis, cacheKey: string) {
 	const roomsCollection = db.collection("residence");
 	roomsCollection.onSnapshot(async () => {
 		try {
-			const pdfBuffer = await generateResidentsPDF();
-			const pdfBase64 = pdfBuffer.toString("base64");
-			await redis.setex(cacheKey, 3600, pdfBase64);
+			await generateResidentsPDF();
+			const pdf = path.resolve('/tmp/Residents_QR_Code.pdf')
+			await redis.setex(cacheKey, 3600, pdf);
 			console.log("PDF regenerated and cached due to Firestore changes.");
 		} catch (error) {
 			console.error("Failed to regenerate PDF on Firestore change:", error);
@@ -49,10 +50,10 @@ export async function pregenerateAndCachePDF(redis: Redis, cacheKey: string) {
 		}
 
 		console.log("Pregenerating and caching PDF...");
-		const pdfBuffer = await generateResidentsPDF();
-		const pdfBase64 = pdfBuffer.toString("base64");
+		await generateResidentsPDF();
+		const pdf = path.resolve('/tmp/Residents_QR_Code.pdf')
 		// Use the same TTL (Time To Live) as the listener for consistency
-		await redis.setex(cacheKey, 3600, pdfBase64);
+		await redis.setex(cacheKey, 3600, pdf);
 		console.log("PDF pregenerated and cached successfully.");
 	} catch (error) {
 		console.error("Failed to pregenerate and cache PDF:", error);
