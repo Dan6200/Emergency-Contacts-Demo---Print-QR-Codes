@@ -1,65 +1,36 @@
 // cspell:disable
-import Redis from "ioredis";
 import {setupResidenceListener} from "../get-all-rooms";
-import {generateResidentsPDF} from "../generate-pdf";
-import fs from 'fs'
-import path from "path";
+import {generateResidentsPDF, RESIDENTS_PDF_PATH} from "../generate-pdf";
+import fs from 'fs/promises'
 
-const redis = new Redis({
-	host: process.env.REDIS_HOST,
-	port: parseInt(process.env.REDIS_PORT),
-	password: process.env.REDIS_PASSWORD,
-	connectTimeout: 100_000,
-});
-
-// Set up Firestore listener for real-time updates
-setupResidenceListener(redis, "residents-pdf");
+setupResidenceListener();
 
 // Add base64 for the logo if you want it embedded
 // You can convert the logo into base64 using an online tool and place the result here
 
 export async function GET() {
-	const cacheKey = "residents-pdf";
 	try {
-		const cachedPDF = await redis.get(cacheKey);
-		if (cachedPDF) {
-			const pdf = cachedPDF
-			const stat = await fs.promises.stat(pdf)
-			return new Response(
-				pdf,
-				{
-					headers: {
-						"content-type": "application/pdf",
-						"content-disposition": 'attachment; filename="Residents Qr Codes.pdf"',
-						"content-length": stat.size.toString(),
-						// Explicitly prevent compression/modification
-						"content-encoding": "identity",
-					},
-				}
-			);
-		}
+		fs.access(RESIDENTS_PDF_PATH, fs.constants.F_OK)
+		const stat = await fs.stat(RESIDENTS_PDF_PATH)
+		return new Response(
+			RESIDENTS_PDF_PATH,
+			{
+				headers: {
+					"content-type": "application/pdf",
+					"content-disposition": 'attachment; filename="Residents Qr Codes.pdf"',
+					"content-length": stat.size.toString(),
+					// Explicitly prevent compression/modification
+					"content-encoding": "identity",
+				},
+			}
+		);
 	} catch (error) {
-		console.error("Redis get operation failed!", error); // Log the actual error
+		console.warn("PDF File does not exist. Generating...", error); // Log the actual error
+		generateResidentsPDF()
 	}
 	try {
-		await generateResidentsPDF();
-		const pdfPath = path.resolve('/app/persistent/Residents_QR_Code.pdf')
-		const stat = await fs.promises.stat(pdfPath)
-
-		// Set cache only if pdfBuffer is not empty
-		if (pdfPath) {
-			// Use await with try...catch for Redis setex
-			try {
-				await redis.setex(cacheKey, 3600, pdfPath);
-			} catch (redisError) {
-				throw new Error("Redis setex operation failed!" + redisError.toString());
-				// Decide if you want to proceed without caching or return an error
-			}
-		} else {
-			console.warn("Generated PDF does not exist. Not caching.");
-		}
-
-		return new Response(pdfPath, {
+		const stat = await fs.stat(RESIDENTS_PDF_PATH)
+		return new Response(RESIDENTS_PDF_PATH, {
 			headers: {
 				"content-type": "application/pdf",
 				"content-disposition": 'attachment; filename="Residents Qr Codes.pdf"',

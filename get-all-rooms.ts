@@ -1,8 +1,6 @@
 import {notFound} from "next/navigation";
 import db from "./firebase-server-config";
-import Redis from "ioredis";
 import {generateResidentsPDF} from "./generate-pdf";
-import path from "path";
 
 export async function getAllRooms() {
 	try {
@@ -20,14 +18,12 @@ export async function getAllRooms() {
 	}
 }
 
-export function setupResidenceListener(redis: Redis, cacheKey: string) {
+export function setupResidenceListener() {
 	const roomsCollection = db.collection("residence");
 	roomsCollection.onSnapshot(async () => {
 		try {
 			await generateResidentsPDF();
-			const pdfPath = path.resolve('/app/persistent/Residents_QR_Code.pdf')
-			await redis.setex(cacheKey, 3600, pdfPath);
-			console.log("PDF regenerated and cached due to Firestore changes.");
+			console.log("PDF regenerated and saved due to Firestore changes.");
 		} catch (error) {
 			throw new Error("Failed to regenerate PDF on Firestore change:" + error.toString());
 		}

@@ -3,13 +3,15 @@ import QRcode from "qrcode";
 import {getAllRooms, Residence} from "./get-all-rooms";
 import path from 'path'
 
+export const RESIDENTS_PDF_PATH = path.resolve('/app/persistent/Residents_QR_Code.pdf')
+
 export async function generateResidentsPDF() {
 	const rooms = await getAllRooms().catch((e) => {
 		throw new Error("Failed to Retrieve Residents Data -- Tag:24.\n\t" + e);
 	});
 
 	const doc = new jsPDF();
-	const filePath = path.resolve('/app/persistent/Residents_QR_Code.pdf')
+	const filePath = RESIDENTS_PDF_PATH
 	doc.save(filePath);
 
 	await Promise.all(

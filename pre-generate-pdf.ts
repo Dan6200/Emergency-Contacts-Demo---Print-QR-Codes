@@ -1,6 +1,4 @@
-import Redis from "ioredis";
-import path from 'path';
-import {generateResidentsPDF} from "./generate-pdf";
+import {generateResidentsPDF, RESIDENTS_PDF_PATH} from "./generate-pdf";
 
 /**
  * Checks if the PDF is already cached in Redis. If not, generates the PDF
@@ -9,9 +7,9 @@ import {generateResidentsPDF} from "./generate-pdf";
  * @param redis - The ioredis client instance.
  * @param cacheKey - The key to use for caching the PDF in Redis.
  */
-export async function pregenerateAndCachePDF(redis: Redis, cacheKey: string) {
+export async function pregeneratePDF() {
 	try {
-		const cachedPdf = await redis.get(cacheKey);
+		const cachedPdf = RESIDENTS_PDF_PATH
 		if (cachedPdf) {
 			console.log("PDF already pre-cached.");
 			return;
@@ -19,12 +17,10 @@ export async function pregenerateAndCachePDF(redis: Redis, cacheKey: string) {
 
 		console.log("Pregenerating and caching PDF...");
 		await generateResidentsPDF();
-		const pdf = path.resolve('/app/persistent/Residents_QR_Code.pdf')
 		// Use the same TTL (Time To Live) as the listener for consistency
-		await redis.setex(cacheKey, 3600, pdf);
-		console.log("PDF pregenerated and cached successfully.");
+		console.log("PDF pregenerated successfully.");
 	} catch (error) {
-		throw new Error("Failed to pregenerate and cache PDF:" + error.toString());
+		throw new Error("Failed to pregenerate PDF:" + error.toString());
 		// Depending on your application's needs, you might want to handle this error more gracefully
 		// or even prevent the application from starting if the initial PDF is critical.
 	}

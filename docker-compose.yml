@@ -10,19 +10,6 @@ services:
     networks:
       - app-network
 
-  redis:
-    image: redis:latest
-    ports:
-      - "6379:6379"
-    networks:
-      - app-network
-    volumes:
-      - ~/redis-config/redis.conf:/usr/local/etc/redis/redis.conf
-      - /var/lib/redis:/var/lib/redis
-      - ~/redis/redis-server.log:/var/log/redis/redis-server.log
-    # Override the default command to start redis with own configuration
-    command: sh -c "redis-server /usr/local/etc/redis/redis.conf && tail -f /var/log/redis/redis-server.log"
-
   certbot:
     image: certbot/certbot
     container_name: certbot
