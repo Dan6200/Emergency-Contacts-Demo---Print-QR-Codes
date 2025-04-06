@@ -1,4 +1,4 @@
-import fs from 'fs'
+import fs from 'fs/promises'
 import jsPDF from 'jspdf';
 import QRcode from "qrcode";
 import {getAllRooms, Residence} from "./get-all-rooms";
@@ -70,10 +70,11 @@ export async function generateResidentsPDF() {
 			}
 		)
 	);
-	doc.save(filePath);
+	const buffer = Buffer.from(new Uint8Array(doc.output("arraybuffer")));
+	await fs.writeFile(RESIDENTS_PDF_PATH, buffer)
 	try {
-		fs.promises.stat(filePath)
-		console.log('PDF generated')
+		const stats = await fs.stat(filePath)
+		console.log('PDF generated', stats)
 	} catch {
 		throw new Error('Failed to generate PDF')
 	}
