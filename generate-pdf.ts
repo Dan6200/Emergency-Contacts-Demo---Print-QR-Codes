@@ -1,3 +1,4 @@
+import fs from 'fs'
 import jsPDF from 'jspdf';
 import QRcode from "qrcode";
 import {getAllRooms, Residence} from "./get-all-rooms";
@@ -70,4 +71,10 @@ export async function generateResidentsPDF() {
 		)
 	);
 	doc.save(filePath);
+	try {
+		fs.promises.stat(filePath)
+		console.log('PDF generated')
+	} catch {
+		throw new Error('Failed to generate PDF')
+	}
 }
