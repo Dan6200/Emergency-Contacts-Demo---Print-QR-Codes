@@ -42,7 +42,7 @@ export async function GET() {
 			},
 		});
 	} catch (error) {
-		console.error("Printing QR's failed: ", error);
+		if (process.env.BUILD_ENV) throw new Error('Failed to generate PDF.')
 		// Return an actual error response
 		return new Response("Failed to generate PDF.", {status: 500});
 	}
