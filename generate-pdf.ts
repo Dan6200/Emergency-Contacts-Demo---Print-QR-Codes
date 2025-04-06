@@ -12,7 +12,7 @@ export async function generateResidentsPDF() {
 
 	const doc = new jsPDF();
 	const filePath = RESIDENTS_PDF_PATH
-	doc.save(filePath);
+	console.log('Generating PDFs @: ', RESIDENTS_PDF_PATH)
 
 	await Promise.all(
 		rooms.map(
@@ -69,4 +69,5 @@ export async function generateResidentsPDF() {
 			}
 		)
 	);
+	doc.save(filePath);
 }
