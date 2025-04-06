@@ -3,14 +3,14 @@ import {setupResidenceListener} from "../get-all-rooms";
 import {generateResidentsPDF, RESIDENTS_PDF_PATH} from "../generate-pdf";
 import fs from 'fs/promises'
 
-setupResidenceListener();
+if (!process.env.BUILD_ENV)
+	setupResidenceListener();
 
 // Add base64 for the logo if you want it embedded
 // You can convert the logo into base64 using an online tool and place the result here
 
 export async function GET() {
 	try {
-		fs.access(RESIDENTS_PDF_PATH, fs.constants.F_OK)
 		const stat = await fs.stat(RESIDENTS_PDF_PATH)
 		return new Response(
 			RESIDENTS_PDF_PATH,
