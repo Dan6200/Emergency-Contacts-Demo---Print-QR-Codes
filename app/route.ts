@@ -26,8 +26,10 @@ export async function GET() {
 		);
 	} catch (error) {
 		console.warn("PDF File does not exist. Generating...", error); // Log the actual error
-		generateResidentsPDF()
+		// Wait for the PDF generation to complete before proceeding
+		await generateResidentsPDF();
 	}
+	// Now try accessing the file again after generation attempt
 	try {
 		const stat = await fs.stat(RESIDENTS_PDF_PATH)
 		return new Response(RESIDENTS_PDF_PATH, {

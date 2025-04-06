@@ -7,7 +7,7 @@ import {generateResidentsPDF, RESIDENTS_PDF_PATH} from "./generate-pdf";
  * @param redis - The ioredis client instance.
  * @param cacheKey - The key to use for caching the PDF in Redis.
  */
-export async function pregeneratePDF() {
+async function pregeneratePDF() {
 	try {
 		const cachedPdf = RESIDENTS_PDF_PATH
 		if (cachedPdf) {
@@ -26,3 +26,4 @@ export async function pregeneratePDF() {
 	}
 }
 
+if (process.env.BUILD_ENV) pregeneratePDF()
