@@ -25,9 +25,16 @@ export async function GET() {
 			}
 		);
 	} catch (error) {
-		console.warn("PDF File does not exist. Generating...", error); // Log the actual error
-		// Wait for the PDF generation to complete before proceeding
-		await generateResidentsPDF();
+		if (error.code === 'ENOENT') {
+			console.warn("PDF File does not exist. Generating...");
+			// Wait for the PDF generation to complete before proceeding
+			await generateResidentsPDF();
+		}
+		else {
+			if (process.env.BUILD_ENV)
+				throw new Error('An Unexpected Error Occurred.')
+			return new Response("An Unexpected Error Occurred.", {status: 500});
+		}
 	}
 	// Now try accessing the file again after generation attempt
 	try {
