@@ -17,10 +17,8 @@ export async function GET() {
 			{
 				headers: {
 					"content-type": "application/pdf",
-					"content-disposition": 'attachment; filename="Residents Qr Codes.pdf"',
+					"content-disposition": 'attachment; filename="residents_qr_codes.pdf"',
 					"content-length": stat.size.toString(),
-					// Explicitly prevent compression/modification
-					"content-encoding": "identity",
 				},
 			}
 		);
@@ -42,10 +40,8 @@ export async function GET() {
 		return new Response(RESIDENTS_PDF_PATH, {
 			headers: {
 				"content-type": "application/pdf",
-				"content-disposition": 'attachment; filename="Residents Qr Codes.pdf"',
+				"content-disposition": 'attachment; filename="residents_qr codes.pdf"',
 				"content-length": stat.size.toString(),
-				// Explicitly prevent compression/modification
-				"content-encoding": "identity",
 			},
 		});
 	} catch (error) {
