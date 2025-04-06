@@ -5,16 +5,19 @@
   "type": "module",
   "module": "nodenext",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
+    "dev": "tsx watch *.js",
+    "build": "tsc -p .",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/express": "^5.0.1",
     "@types/pdfkit": "^0.13.9",
     "@types/qrcode": "^1.5.5",
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
     "firebase-admin": "^12.6.0",
     "ioredis": "^5.4.1",
     "jspdf": "^2.5.2",
