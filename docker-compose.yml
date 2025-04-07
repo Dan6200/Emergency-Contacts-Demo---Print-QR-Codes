@@ -4,8 +4,6 @@ services:
     image: danielnyong/emergency-contacts-print-qr:latest
     ports:
       - "3000:3000"
-    depends_on:
-      - redis
     env_file: ~/emergency-contacts-print-qr/.env
     networks:
       - app-network

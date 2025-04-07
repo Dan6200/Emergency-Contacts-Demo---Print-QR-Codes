@@ -8,3 +8,7 @@
 @*bak
 @/.next/
 @/dev-tools/
+@*.ts*
+@/src/
+@tsconfig.*
+@public/

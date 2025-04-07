@@ -1,34 +1,61 @@
 {
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": false,
-    "noEmit": true,
-    "incremental": true,
-    "module": "esnext",
+    /* Base Options: */
     "esModuleInterop": true,
-    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "target": "ES2022", // Target modern Node.js versions
+    "allowJs": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ]
+    "moduleDetection": "force",
+    "isolatedModules": true, // Often needed for transpilers/bundlers, good practice
+
+    /* Strictness */
+    "strict": false, // Consider changing to true for better type safety
+    "forceConsistentCasingInFileNames": true,
+    "noUncheckedIndexedAccess": true, // Recommended for stricter checks
+
+    /* If NOT transpiling with SWC or esbuild */
+    "module": "CommonJS", // Standard for Node.js unless using native ESM
+    "outDir": "./dist", // Output directory for compiled JS
+    "sourceMap": true, // Generate source maps for debugging
+
+    /* If your code runs in the DOM */
+    // "lib": ["dom", "dom.iterable", "esnext"],
+
+    /* If your code doesn't run in the DOM */
+    "lib": ["ES2022"], // Use ES versions matching your target Node.js
+
+    /* If you're building for a library */
+    // "declaration": true,
+
+    /* If you're building for a browser */
+    // "module": "esnext",
+    // "moduleResolution": "bundler", // Or "node" if not using a bundler
+
+    /* Set 'rootDir' to prevent files outside 'src' from being included */
+    "rootDir": "./src",
+
+    /* No longer emitting (handled by tsc now) */
+    "noEmit": false, // We *want* tsc to emit JS files
+
+    /* Incremental builds */
+    "incremental": true,
+
+    /* Path Aliases (Optional) */
+    // "baseUrl": ".",
+    // "paths": {
+    //   "@/*": ["./src/*"]
+    // }
   },
   "include": [
-    "next-env.d.ts",
-    ".next/types/**/*.ts",
-    "**/*.ts",
-    "**/*.tsx"
+    "src/**/*.ts", // Include all TS files within src
+    "firebase-server-config.ts", // Explicitly include top-level files if needed
+    "get-all-rooms.ts",
+    "generate-pdf.ts"
+    // Add other top-level TS files here if they exist
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "dist" // Exclude the output directory
   ]
 }
