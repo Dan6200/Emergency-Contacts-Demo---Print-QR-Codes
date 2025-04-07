@@ -42,9 +42,9 @@ export async function generateResidentsPDF() {
 
 				// Use doc.image for data URIs
 				doc.addImage(qrCodeDataUri, 75, 100, 60, 60);
-				doc.setFont("bold");
+				doc.setFont("Helvetica", "normal");
 				// doc.text("INSTANT ACCESS TO EMERGENCY INFO", 35, 183, {align: "center"});
-				doc.text("INSTANT ACCESS TO EMERGENCY INFO", 35, 183, {align: "center"});
+				doc.text("INSTANT ACCESS TO EMERGENCY INFO", 35, 183);
 
 				// Extract the part of the address before the first digit, assumed to be the street name.
 				const streetMatch = address.match(/^[A-Za-z ]+(?=\s\d)/);
