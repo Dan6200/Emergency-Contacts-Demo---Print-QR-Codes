@@ -15,7 +15,8 @@
     "noUncheckedIndexedAccess": true, // Recommended for stricter checks
 
     /* If NOT transpiling with SWC or esbuild */
-    "module": "CommonJS", // Standard for Node.js unless using native ESM
+    "module": "NodeNext", // Required for Node.js ESM compatibility
+    "moduleResolution": "NodeNext", // Required for ES modules in Node.js
     "outDir": "./dist", // Output directory for compiled JS
     "sourceMap": true, // Generate source maps for debugging
 

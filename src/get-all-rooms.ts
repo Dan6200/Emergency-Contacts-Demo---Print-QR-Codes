@@ -1,6 +1,5 @@
-import {notFound} from "next/navigation";
-import db from "./firebase-server-config";
-import {generateResidentsPDF} from "./generate-pdf";
+import db from "./firebase-server-config.js";
+import {generateResidentsPDF} from "./generate-pdf.js";
 
 export async function getAllRooms() {
 	try {

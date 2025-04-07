@@ -1,7 +1,7 @@
 import fs from 'fs/promises'
-import jsPDF from 'jspdf';
+import {jsPDF} from 'jspdf';
 import QRcode from "qrcode";
-import {getAllRooms, Residence} from "./get-all-rooms";
+import {getAllRooms, Residence} from "./get-all-rooms.js";
 import path from 'path'
 
 export const RESIDENTS_PDF_PATH = path.resolve('/app/persistent/Residents_QR_Code.pdf')

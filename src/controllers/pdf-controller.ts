@@ -1,6 +1,6 @@
 import {Request, Response} from 'express';
 import fs from 'fs/promises';
-import {generateResidentsPDF, RESIDENTS_PDF_PATH} from '../generate-pdf'; // Adjust path relative to dist/controllers
+import {generateResidentsPDF, RESIDENTS_PDF_PATH} from '../generate-pdf.js'; // Adjust path relative to dist/controllers
 
 /**
  * @description Handles the request to download the residents QR code PDF.

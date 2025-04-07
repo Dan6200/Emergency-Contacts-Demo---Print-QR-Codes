@@ -11,11 +11,15 @@ SHELL := /bin/bash
 APP_NAME := print-qr-app
 DOCKER_COMPOSE_FILE := docker-compose.yml
 
-all: build run ## Build the project and run the application
+all: build test ## Build the project and test the application
 
 build: ## Compile TypeScript to JavaScript
 	@echo "Building TypeScript..."
 	pnpm build
+
+test: build ## Build and run the application using Docker Compose
+	@echo "Starting application..."
+	pnpm start
 
 run: build ## Build and run the application using Docker Compose
 	@echo "Starting application with Docker Compose..."

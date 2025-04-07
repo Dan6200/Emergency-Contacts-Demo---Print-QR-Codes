@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {downloadPdf} from '../controllers/pdf-controller'; // Adjust path relative to dist/routes
+import {downloadPdf} from '../controllers/pdf-controller.js'; // Adjust path relative to dist/routes
 
 const router = Router();
 

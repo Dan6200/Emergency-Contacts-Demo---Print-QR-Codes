@@ -2,6 +2,7 @@ import {getApp, initializeApp} from "firebase-admin/app";
 import fbAdmin from "firebase-admin";
 import {getAuth} from "firebase-admin/auth";
 import {getFirestore} from "firebase-admin/firestore";
+import 'dotenv/config';
 
 const {credential} = fbAdmin;
 let auth = null;

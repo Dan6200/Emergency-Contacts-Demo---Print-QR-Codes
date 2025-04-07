@@ -1,7 +1,7 @@
 import express, {Express, Request, Response} from 'express';
 import dotenv from 'dotenv';
-import pdfRoutes from './routes/pdf-routes'; // Adjust path relative to dist
-import {setupResidenceListener} from './get-all-rooms'; // Adjust path relative to dist
+import pdfRoutes from './routes/pdf-routes.js'; // Adjust path relative to dist
+import {setupResidenceListener} from './get-all-rooms.js'; // Adjust path relative to dist
 
 // Load environment variables from .env file
 dotenv.config();

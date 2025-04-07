@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "tsx watch *.js",
     "build": "tsc -p .",
-    "start": "node src/server.js"
+    "start": "node dist/server.js"
   },
   "keywords": [],
   "author": "",
