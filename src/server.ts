@@ -17,7 +17,7 @@ if (!process.env.DOMAIN) {
 }
 
 const app: Express = express();
-const port = process.env.PORT || 3001; // Use PORT from env or default to 3001
+const port = process.env.PORT || 3000; // Use PORT from env or default to 3000
 
 // Middleware (optional, add as needed)
 // app.use(express.json()); // Example: if you need to parse JSON bodies
